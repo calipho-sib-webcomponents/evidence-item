@@ -60,7 +60,7 @@ Block element representing an evidence record.
                             <p class="experiments-line">Number of experiments: {{data.numberOfExperiments}}</p>
                         </div>
                     </template>
-                    <template is="dom-if" if="{{data.resourceAccession}}">
+                    <template is="dom-if" if="{{_hasCrossRef()}}">
                         <div class="evidence-accession">
                             <p><a href="{{data.url}}" class="ext-link" target='_blank'>{{data.resourceAccession}}</a></p>
                         </div>
@@ -87,6 +87,15 @@ Block element representing an evidence record.
             },
             _getSource: function(){
                 return this.data.resourceDb || this.data.assignedBy;
+            },
+            _hasCrossRef: function() {
+                if (this.data.resourceAccession) return true;
+                if (this.data.crossRef) {
+                    this.data.resourceAccession = this.data.crossRef.name;
+                    this.data.url = this.data.crossRef.url;
+                    return true;
+                }
+                return;
             }
         });
     </script>
